@@ -1,0 +1,17 @@
+clear
+clc
+img = imread('C:\Users\Administrator.USER-20190228JN\Desktop\u=1415675367,1334038936&fm=15&gp=0.jpg');
+s=ft_saliency(img);
+subplot(1,2,1);imshow(img);
+subplot(1,2,2);imshow(s);
+function sm= ft_saliency(img)
+     gfrgb = imfilter(img, fspecial('gaussian',3,3), 'symmetric', 'conv');
+     cform = makecform('srgb2lab');
+     lab = applycform(gfrgb,cform);
+    l = double(lab(:,:,1)); lm = mean(mean(l));
+    a = double(lab(:,:,2)); am = mean(mean(a));
+    b = double(lab(:,:,3)); bm = mean(mean(b));
+    sm = (l-lm).^2 + (a-am).^2 + (b-bm).^2;  
+    sm=(sm-min(min(sm)))./(max(max(sm))-min(min(sm)));
+%     imshow(sm);
+end
